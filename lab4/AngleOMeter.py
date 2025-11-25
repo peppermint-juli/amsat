@@ -13,13 +13,13 @@ import math
 
 kalmanX = KalmanAngle()
 kalmanY = KalmanAngle()
-#kalmanZ
+kalmanZ = KalmanAngle()
 
 RestrictPitch = True  # Comment out to restrict roll to ±90deg instead - please read: http://www.freescale.com/files/sensors/doc/app_note/AN3461.pdf
 radToDeg = 57.2957786
 kalAngleX = 0
 kalAngleY = 0
-#kalAngleZ
+kalAngleZ = 0
 
 # some MPU6050 Registers and their Address
 PWR_MGMT_1 = 0x6B
@@ -86,16 +86,21 @@ accZ = read_raw_data(ACCEL_ZOUT_H)
 if (RestrictPitch):
 	roll = math.atan2(accY, accZ) * radToDeg
 	pitch = math.atan(-accX / math.sqrt((accY ** 2) + (accZ ** 2))) * radToDeg
+	yaw = math.atan(accZ/math.sqrt((accX**2)+(accZ**2))) * radToDeg
 else:
 	roll = math.atan(accY / math.sqrt((accX ** 2) + (accZ ** 2))) * radToDeg
 	pitch = math.atan2(-accX, accZ) * radToDeg
+	yaw = math.atan(accZ/math.sqrt((accX**2)+(accZ**2))) * radToDeg
 print(roll)
 kalmanX.setAngle(roll)
 kalmanY.setAngle(pitch)
+kalmanZ.setAngle(yaw)
 gyroXAngle = roll
 gyroYAngle = pitch
+gyroZAngle = yaw
 compAngleX = roll
 compAngleY = pitch
+compAngleZ = yaw
 
 timer = time.time()
 flag = 0
@@ -122,13 +127,15 @@ while True:
 		if (RestrictPitch):
 			roll = math.atan2(accY, accZ) * radToDeg
 			pitch = math.atan(-accX / math.sqrt((accY ** 2) + (accZ ** 2))) * radToDeg
+			yaw = math.atan(accZ/math.sqrt((accX**2)+(accZ**2))) * radToDeg
 		else:
 			roll = math.atan(accY / math.sqrt((accX ** 2) + (accZ ** 2))) * radToDeg
 			pitch = math.atan2(-accX, accZ) * radToDeg
+			yaw = math.atan(accZ/math.sqrt((accX**2)+(accZ**2))) * radToDeg
 
-		gyroXRate = gyroX / 131
-		gyroYRate = gyroY / 131
-		# gyroZRate = gyroZ/131
+		gyroXRate = gyroX/131
+		gyroYRate = gyroY/131
+		gyroZRate = gyroZ/131
 
 		if (RestrictPitch):
 
@@ -157,29 +164,32 @@ while True:
 				gyroXRate = -gyroXRate
 				kalAngleX = kalmanX.getAngle(roll, gyroXRate, dt)
 
-		# if((yaw < -90 and kalAngleZ >90) or (yaw > 90 and kalAngleZ < -90)):
-		#    kalmanZ.setAngle(yaw)
-		#    complAngleZ = yaw
-		#    kalAngleZ   = yaw
-		#    gyroZAngle  = yaw
-		# else:
-		#    kalAngleZ = kalmanZ.getAngle(yaw,gyroZRate,dt) 
+		if((yaw < -90 and kalAngleZ >90) or (yaw > 90 and kalAngleZ < -90)):
+			kalmanZ.setAngle(yaw)
+			complAngleZ = yaw
+			kalAngleZ   = yaw
+			gyroZAngle  = yaw
+		else:
+			kalAngleZ = kalmanZ.getAngle(yaw,gyroZRate,dt) 
 
 		# angle = (rate of change of angle) * change in time; add for Z axis
 		gyroXAngle = gyroXRate * dt
 		gyroYAngle = gyroYRate * dt
+		gyroZAngle = gyroZRate * dt
 
 		# compAngle = constant * (old_compAngle + angle_obtained_from_gyro) + constant * angle_obtained from accelerometer; add for Z axis
 		compAngleX = 0.93 * (compAngleX + gyroXRate * dt) + 0.07 * roll
 		compAngleY = 0.93 * (compAngleY + gyroYRate * dt) + 0.07 * pitch
+		compAngleZ = 0.93 * (compAngleZ + gyroZRate * dt) + 0.07 * yaw
 
 		if ((gyroXAngle < -180) or (gyroXAngle > 180)):
 			gyroXAngle = kalAngleX
 		if ((gyroYAngle < -180) or (gyroYAngle > 180)):
 			gyroYAngle = kalAngleY
-		# Add for Z
+		if ((gyroZAngle < -180) or (gyroZAngle > 180)):
+			gyroZAngle = kalAngleZ
 
-		print("Angle X: " + str(kalAngleX) + "   " + "Angle Y: " + str(kalAngleY))
+		print("Angle X: " + str(kalAngleX) + "   " + "Angle Y: " + str(kalAngleY)+"   " + "Angle Z: " + str(kalAngleZ))
 		# print(str(roll)+"  "+str(gyroXAngle)+"  "+str(compAngleX)+"  "+str(kalAngleX)+"  "+str(pitch)+"  "+str(gyroYAngle)+"  "+str(compAngleY)+"  "+str(kalAngleY))
 		time.sleep(0.005)
 
