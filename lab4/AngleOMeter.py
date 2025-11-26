@@ -203,6 +203,8 @@ while True:
 			
 		if ((kalAngleX > (xThresholdAngle - tolerance)) or (kalAngleX < (xThresholdAngle + tolerance))):
 			print("Turning X LED on, X angle: " + str(kalAngleX))
+			print("Turning X LED on, X threshold angle: " + str(xThresholdAngle))
+			print("Turning X LED on, tolerance: " + str(tolerance))
 			xLed.on()
 		else:
 			xLed.off()
