@@ -201,19 +201,17 @@ while True:
 		if ((gyroZAngle < -180) or (gyroZAngle > 180)):
 			gyroZAngle = kalAngleZ
 			
-		if ((kalAngleX > (xThresholdAngle - tolerance)) or (kalAngleX < (xThresholdAngle + tolerance))):
-			print("Turning X LED on, X angle: " + str(kalAngleX))
-			print("Turning X LED on, X threshold angle: " + str(xThresholdAngle))
-			print("Turning X LED on, tolerance: " + str(tolerance))
+		if ((kalAngleX > (xThresholdAngle - tolerance)) and (kalAngleX < (xThresholdAngle + tolerance))):
+			print("Turning X LED on, tolerance: " + str(kalAngleX))
 			xLed.on()
 		else:
 			xLed.off()
-		if ((kalAngleY > (yThresholdAngle - tolerance)) or (kalAngleY < (yThresholdAngle + tolerance))):
+		if ((kalAngleY > (yThresholdAngle - tolerance)) and (kalAngleY < (yThresholdAngle + tolerance))):
 			print("Turning Y LED on, Y angle: " + str(kalAngleY))
 			yLed.on()
 		else:
 			yLed.off()
-		if ((kalAngleZ > (zThresholdAngle - tolerance)) or (kalAngleZ < (zThresholdAngle + tolerance))):
+		if ((kalAngleZ > (zThresholdAngle - tolerance)) and (kalAngleZ < (zThresholdAngle + tolerance))):
 			print("Turning Z LED on, Z angle: " + str(kalAngleZ))
 			zLed.on()
 		else:
