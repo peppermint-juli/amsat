@@ -16,9 +16,12 @@ from gpiozero import LED
 xLed = LED(25)
 yLed = LED(8)
 zLed = LED(7)
-xLed.on()
-yLed.on()
-zLed.on()
+
+xThresholdAngle = 70
+yThresholdAngle = 120
+zThresholdAngle = 15
+
+tolerance = 5
 
 kalmanX = KalmanAngle()
 kalmanY = KalmanAngle()
@@ -195,10 +198,24 @@ while True:
 			gyroXAngle = kalAngleX
 		if ((gyroYAngle < -180) or (gyroYAngle > 180)):
 			gyroYAngle = kalAngleY
-		if ((gyroZAngle < -180) or (gyroZAngle > 180)):
-			gyroZAngle = kalAngleZ
+	if ((gyroZAngle < -180) or (gyroZAngle > 180)):
+		gyroZAngle = kalAngleZ
 
-		print("Angle X: " + str(kalAngleX) + "   " + "Angle Y: " + str(kalAngleY)+"   " + "Angle Z: " + str(kalAngleZ))
+	if ((kalAngleX > xThresholdAngle - tolerance) or (kalAngleX < xThresholdAngle + tolerance)):
+		xLed.on()
+	else:
+		xLed.off()
+	if ((kalAngleY > yThresholdAngle - tolerance) or (kalAngleY < yThresholdAngle + tolerance)):
+		yLed.on()
+	else:
+		yLed.off()
+	if ((kalAngleZ > zThresholdAngle - tolerance) or (kalAngleZ < zThresholdAngle + tolerance)):
+		zLed.on()
+	else:
+		zLed.off()
+
+
+	print("Angle X: " + str(kalAngleX) + "   " + "Angle Y: " + str(kalAngleY)+"   " + "Angle Z: " + str(kalAngleZ))
 		# print(str(roll)+"  "+str(gyroXAngle)+"  "+str(compAngleX)+"  "+str(kalAngleX)+"  "+str(pitch)+"  "+str(gyroYAngle)+"  "+str(compAngleY)+"  "+str(kalAngleY))
 		time.sleep(0.005)
 
