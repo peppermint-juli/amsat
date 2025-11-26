@@ -11,6 +11,11 @@ import smbus            # import SMBus module of I2C
 import time
 import math
 
+from gpiozero import LED
+
+xLed = LED(25)
+xLed.on()
+
 kalmanX = KalmanAngle()
 kalmanY = KalmanAngle()
 kalmanZ = KalmanAngle()
