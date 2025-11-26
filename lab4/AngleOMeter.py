@@ -14,7 +14,11 @@ import math
 from gpiozero import LED
 
 xLed = LED(25)
+yLed = LED(8)
+zLed = LED(7)
 xLed.on()
+yLed.on()
+zLed.on()
 
 kalmanX = KalmanAngle()
 kalmanY = KalmanAngle()
