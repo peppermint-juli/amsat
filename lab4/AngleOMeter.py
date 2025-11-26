@@ -13,7 +13,7 @@ import math
 
 from gpiozero import LED
 
-xLed = LED(22)
+xLed = LED(25)
 xLed.on()
 
 kalmanX = KalmanAngle()
