@@ -1,6 +1,13 @@
 
 // Connect WebSocket
 const ws = new WebSocket(`ws://${location.host}/ws`);
+
+ws.onopen = () => console.log("✅ WebSocket connected");
+ws.onclose = () => console.log("❌ WebSocket closed");
+ws.onerror = (err) => console.error("WebSocket error:", err);
+
+
+
 const yawEl = document.getElementById('yaw');
 const pitchEl = document.getElementById('pitch');
 const rollEl = document.getElementById('roll');
