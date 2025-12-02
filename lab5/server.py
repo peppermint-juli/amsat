@@ -20,6 +20,7 @@ def appjs():
 @sock.route('/ws')
 def ws(ws):
     for sample in orientation_stream(hz=60):
+        print(sample)
         ws.send(json.dumps(sample))
 
 if __name__ == '__main__':
