@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>MPU6050 Web Visualizer</title>
+  <style>
+    body {
+      margin: 0;
+      background: #111;
+      color: #ddd;
+      font-family: system-ui;
+    }
+
+    #hud {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 10;
+    }
+
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="hud">
+    <div>Yaw: <span id="yaw">0</span>°</div>
+    <div>Pitch: <span id="pitch">0</span>°</div>
+    <div>Roll: <span id="roll">0</span>°</div>
+    <div>dt: <span id="dt">0</span> ms</div>
+  </div>
+  <!-- Three.js CDN -->
+  https://unpkg.com/three@0.160.0/build/three.min.js</script>
+  /app.js</script>
+</body>
+
+</html>
