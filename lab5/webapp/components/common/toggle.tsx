@@ -1,6 +1,6 @@
 import React, { CSSProperties, useState } from 'react';
 
-import './Toggle.css';
+import './toggle.css';
 
 type ToggleProps = {
   isOn?: boolean,
