@@ -1,4 +1,3 @@
-import { NewPayment } from 'components/contents/newPayment';
 import { OrientationInfo } from 'components/contents/orientationInfo';
 
 
