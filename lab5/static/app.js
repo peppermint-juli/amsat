@@ -2,9 +2,7 @@
 // Connect WebSocket
 const ws = new WebSocket(`ws://${location.host}/ws`);
 
-ws.onopen = () => console.log("✅ WebSocket connected");
-ws.onclose = () => console.log("❌ WebSocket closed");
-ws.onerror = (err) => console.error("WebSocket error:", err);
+
 
 
 
@@ -37,6 +35,9 @@ scene.add(new THREE.AmbientLight(0xffffff, 0.3));
 cube.rotation.order = 'YXZ'; // three.js stores rotations via quaternion internally. [2](https://threejs.org/manual/en/matrix-transformations.html)[3](https://threejs.org/docs/)
 
 let latest = { yaw: 0, pitch: 0, roll: 0 };
+ws.onopen = () => console.log("✅ WebSocket connected");
+ws.onclose = () => console.log("❌ WebSocket closed");
+ws.onerror = (err) => console.error("WebSocket error:", err);
 ws.onmessage = (evt) => {
   const d = JSON.parse(evt.data);
   latest = d;
