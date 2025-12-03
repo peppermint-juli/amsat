@@ -1,3 +1,4 @@
+'use client';
 import { FC } from 'react';
 import { useDeviceOrientation } from './useDeviceOrientation';
 import OrientationSwitcher from './OrientationSwitcher';
